@@ -3,10 +3,12 @@ package com.example.lionnote
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = MainAdapter(mainItems)
         rvMain = findViewById(R.id.rv_main)
         rvMain.adapter = adapter
-        rvMain.layoutManager = LinearLayoutManager(this)
+        rvMain.layoutManager = GridLayoutManager(this,2)
 
 //        btnImc=findViewById(R.id.btn_imc)
 //        btnImc.setOnClickListener{
