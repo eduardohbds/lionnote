@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -30,7 +31,18 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             )
         )
 
-        val adapter = MainAdapter(mainItems, this)
+        val adapter = MainAdapter(mainItems) { id ->
+            when(id){
+                1 -> {
+                    val intent = Intent(this@MainActivity,imcActivity::class.java)
+                    startActivity(intent)
+                }
+                2 -> {
+                    //abrir uma outra ac
+                }
+            }
+            Log.i("teste","clicou $id")
+        }
         rvMain = findViewById(R.id.rv_main)
         rvMain.adapter = adapter
         rvMain.layoutManager = LinearLayoutManager(this)
@@ -43,7 +55,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     override fun OnClick(id: Int) {
-        when{
+        when(id){
             1->{
                 val intent = Intent(this,imcActivity::class.java)
                 startActivity(intent)
@@ -53,7 +65,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     private inner class MainAdapter(
         private val mainItems: List<MainItem>,
-        private val onItemClickListener: OnItemClickListener
+        private val onItemClickListener: (Int) -> Unit
     ) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
             val viewHolder = layoutInflater.inflate(R.layout.menu_item, parent, false)
@@ -81,7 +93,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                 container.setBackgroundColor(item.color)
 
                 container.setOnClickListener{
-                    onItemClickListener.OnClick(item.id)
+                    onItemClickListener.invoke(item.id)
 
                 }
             }
