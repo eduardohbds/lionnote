@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.lionnote.model.Calc
 
 class imcActivity : AppCompatActivity() {
     private lateinit var editHeight: EditText;
@@ -39,11 +40,18 @@ class imcActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle(getString(R.string.imc_response,result))
                 .setMessage(imcResponseId)
-                .setPositiveButton(android.R.string.ok, object : DialogInterface.OnClickListener {
-                override fun onClick(dialog: DialogInterface?, which: Int) {
-                    TODO("Not yet implemented")
-                }
-            })
+                .setPositiveButton(android.R.string.ok
+                ) { dialog, which -> TODO("Not yet implemented") }
+                .setNegativeButton(R.string.save
+                ){ dialog, which ->
+                    //Processo paralelo para não travar a main thread UI
+                    Thread{
+                    val app = application as App
+                    val dao = app.db.calcDao()
+                    dao.insert(Calc(type="imc", res = result))
+                    Toast.makeText(this@imcActivity,R.string.saved,Toast.LENGTH_SHORT).show()
+                    }.start()
+                 }
                 .create()
                 .show()
 

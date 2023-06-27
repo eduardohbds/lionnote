@@ -27,4 +27,6 @@
 
     <string name="imc_response">Seu Imc é: %1$.2f</string>
     <string name="imageDescription">Imagem do item do imc</string>
+    <string name="save">Salvar</string>
+    <string name="saved">Registro salvo com sucesso</string>
 </resources>
