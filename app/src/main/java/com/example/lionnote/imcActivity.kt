@@ -2,6 +2,7 @@ package com.example.lionnote
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.inputmethodservice.InputMethodService
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -52,9 +53,9 @@ class imcActivity : AppCompatActivity() {
                         val dao = app.db.calcDao()
                         dao.insert(Calc(type = "imc", res = result))
                         runOnUiThread {//usado para escrever na thread principal
-                            Toast.makeText(this@imcActivity, R.string.saved, Toast.LENGTH_SHORT)
-                                .show()
-
+                            val intent = Intent(this@imcActivity,ListCalcActivity::class.java)
+                            intent.putExtra("type","imc")
+                            startActivity(intent)
                         }
                     }.start()
                 }
