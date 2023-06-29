@@ -26,7 +26,9 @@
     <string name="imc_extreme_weight">Extremamente obeso</string>
 
     <string name="imc_response">Seu Imc é: %1$.2f</string>
+    <string name="list_response">Resultado: %1$.2f, data: %2$s</string>
     <string name="imageDescription">Imagem do item do imc</string>
     <string name="save">Salvar</string>
     <string name="saved">Registro salvo com sucesso</string>
+    <string name="search">Buscar</string>
 </resources>
