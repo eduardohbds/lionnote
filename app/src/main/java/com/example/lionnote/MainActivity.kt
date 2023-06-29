@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
             }
         }
     }
-
     private inner class MainAdapter(
         private val mainItems: List<MainItem>,
         private val onItemClickListener: (Int) -> Unit
