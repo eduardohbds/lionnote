@@ -1,11 +1,13 @@
 package com.example.lionnote
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
@@ -13,23 +15,36 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemClickListener {
 
     //    private lateinit var btnImc:LinearLayout;
-    private lateinit var rvMain:RecyclerView
+    private lateinit var rvMain: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         val mainItems = mutableListOf<MainItem>()
         mainItems.add(
-            MainItem(id = 1,
+            MainItem(
+                id = 1,
                 drawbleId = R.drawable.ic_imc,
                 textStringId = R.string.label_imc,
-                color = Color.GRAY)
+                color = Color.GRAY
+            )
         )
 
-        val adapter = MainAdapter(mainItems)
+        val adapter = MainAdapter(mainItems) { id ->
+            when(id){
+                1 -> {
+                    val intent = Intent(this@MainActivity,imcActivity::class.java)
+                    startActivity(intent)
+                }
+                2 -> {
+                    //abrir uma outra ac
+                }
+            }
+            Log.i("teste","clicou $id")
+        }
         rvMain = findViewById(R.id.rv_main)
         rvMain.adapter = adapter
         rvMain.layoutManager = GridLayoutManager(this,2)
@@ -41,11 +56,23 @@ class MainActivity : AppCompatActivity() {
 //        }
     }
 
-    private inner class MainAdapter(private val mainItems: List<MainItem>) : RecyclerView.Adapter<MainViewHolder>() {
+    override fun OnClick(id: Int) {
+        when(id){
+            1->{
+                val intent = Intent(this,imcActivity::class.java)
+                startActivity(intent)
+            }
+        }
+    }
+    private inner class MainAdapter(
+        private val mainItems: List<MainItem>,
+        private val onItemClickListener: (Int) -> Unit
+    ) : RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-            val viewHolder = layoutInflater.inflate(R.layout.menu_item,parent,false)
+            val viewHolder = layoutInflater.inflate(R.layout.menu_item, parent, false)
             return MainViewHolder(viewHolder)
         }
+
         // informar quantos celulas essa listagem terá
         override fun getItemCount(): Int {
             return mainItems.size
@@ -56,17 +83,24 @@ class MainActivity : AppCompatActivity() {
             holder.bind(itemMenu)
         }
 
-    }
-    //a classe da celula em si
-    private class MainViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: MainItem) {
-            val image: ImageView = itemView.findViewById(R.id.item_img_icon)
-            val text: TextView = itemView.findViewById(R.id.item_txt_name)
-            val container: LinearLayout = itemView as LinearLayout
+        private inner class MainViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            fun bind(item: MainItem) {
+                val image: ImageView = itemView.findViewById(R.id.item_img_icon)
+                val text: TextView = itemView.findViewById(R.id.item_txt_name)
+                val container: LinearLayout = itemView.findViewById(R.id.item_container_imc)
 
-            image.setImageResource(item.drawbleId)
-            text.setText(item.textStringId)
-            container.setBackgroundColor(item.color)
+                image.setImageResource(item.drawbleId)
+                text.setText(item.textStringId)
+                container.setBackgroundColor(item.color)
+
+                container.setOnClickListener{
+                    onItemClickListener.invoke(item.id)
+
+                }
+            }
         }
     }
+    //a classe da celula em si
+
+
 }
