@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -53,9 +55,7 @@ class imcActivity : AppCompatActivity() {
                         val dao = app.db.calcDao()
                         dao.insert(Calc(type = "imc", res = result))
                         runOnUiThread {//usado para escrever na thread principal
-                            val intent = Intent(this@imcActivity,ListCalcActivity::class.java)
-                            intent.putExtra("type","imc")
-                            startActivity(intent)
+                            openListActivity()
                         }
                     }.start()
                 }
@@ -66,6 +66,24 @@ class imcActivity : AppCompatActivity() {
             service.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
         }
+    }
+    // se for true->visivel else invisivel
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_search){
+            openListActivity()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun openListActivity() {
+        val intent = Intent(this@imcActivity,ListCalcActivity::class.java)
+        intent.putExtra("type","imc")
+        startActivity(intent)
     }
 
     @StringRes
