@@ -6,16 +6,21 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.lionnote.model.Calc
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ListCalcActivity : AppCompatActivity() {
     private lateinit var rv : RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_calc)
-
+        val result = mutableListOf<Calc>()
+        val adapter = ListCalcAdapter(result)
         rv = findViewById(R.id.rv_list)
         rv.layoutManager = LinearLayoutManager(this)
+        rv.adapter = adapter
 
 
         //se não chegar nada joga um erro
@@ -25,13 +30,14 @@ class ListCalcActivity : AppCompatActivity() {
             val dao = app.db.calcDao()
             val response = dao.getRegisterByType(type)
             runOnUiThread {//usado para escrever na thread principal
+                result.addAll(response)
+                adapter.notifyDataSetChanged()
             }
         }.start()
     }
 
     private inner class ListCalcAdapter(
         private val listCalc: List<Calc>,
-        private val onItemClickListener: (Int) -> Unit
     ) : RecyclerView.Adapter<ListCalcAdapter.ListCalcHolder>() {
         //Qual é o layout XML da celula
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListCalcHolder {
@@ -50,20 +56,14 @@ class ListCalcActivity : AppCompatActivity() {
         }
         //classe da celula em si
         private inner class ListCalcHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            fun bind(item: MainItem) {
-                val image: ImageView = itemView.findViewById(R.id.item_img_icon)
-                val text: TextView = itemView.findViewById(R.id.item_txt_name)
-                val container: LinearLayout = itemView.findViewById(R.id.item_container_imc)
+            fun bind(item: Calc) {
+                val tv = itemView as TextView
 
-                image.setImageResource(item.drawbleId)
-                text.setText(item.textStringId)
-                container.setBackgroundColor(item.color)
+                val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale("pt"))
+                val data = sdf.format(item.createdDate)
+                val res = item.res
 
-                container.setOnClickListener{
-                    //ref de function
-                    onItemClickListener.invoke(item.id)
-
-                }
+                tv.text = getString(R.string.list_response,res,data)
             }
         }
     }
