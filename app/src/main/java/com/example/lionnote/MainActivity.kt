@@ -5,12 +5,10 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -40,7 +38,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                     startActivity(intent)
                 }
                 2 -> {
-                    //abrir uma outra ac
+                    val intent = Intent(this@MainActivity,tmbActivity::class.java)
+                    startActivity(intent)
                 }
             }
             Log.i("teste","clicou $id")
