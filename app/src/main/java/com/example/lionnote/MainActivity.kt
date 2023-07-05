@@ -30,6 +30,30 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                 color = Color.GRAY
             )
         )
+        mainItems.add(
+            MainItem(
+                id = 2,
+                drawbleId = R.drawable.tmb,
+                textStringId = R.string.label_tmb,
+                color = Color.GRAY
+            )
+        )
+        mainItems.add(
+            MainItem(
+                id = 3,
+                drawbleId = R.drawable.baseline_location_on_24,
+                textStringId = R.string.label_academia,
+                color = Color.GRAY
+            )
+        )
+        mainItems.add(
+            MainItem(
+                id = 4,
+                drawbleId = R.drawable.body_fat,
+                textStringId = R.string.label_bf,
+                color = Color.GRAY
+            )
+        )
 
         val adapter = MainAdapter(mainItems) { id ->
             when(id){
@@ -38,6 +62,14 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                     startActivity(intent)
                 }
                 2 -> {
+                    val intent = Intent(this@MainActivity,tmbActivity::class.java)
+                    startActivity(intent)
+                }
+                3 -> {
+                    val intent = Intent(this@MainActivity,tmbActivity::class.java)
+                    startActivity(intent)
+                }
+                4 -> {
                     val intent = Intent(this@MainActivity,tmbActivity::class.java)
                     startActivity(intent)
                 }

@@ -12,7 +12,7 @@ import android.widget.*
 import com.example.lionnote.model.Calc
 
 class tmbActivity : AppCompatActivity() {
-    private lateinit var lifestyleAuto:AutoCompleteTextView
+    private lateinit var lifestyleAuto: AutoCompleteTextView
     private lateinit var editHeight: EditText;
     private lateinit var editWeight: EditText;
     private lateinit var editAge: EditText;
@@ -26,10 +26,10 @@ class tmbActivity : AppCompatActivity() {
 
         lifestyleAuto = findViewById(R.id.auto_lifestyle)
         val items = resources.getStringArray(R.array.tmb_lifestyle)
-        val adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1,items)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
         lifestyleAuto.setAdapter(adapter)
 
-        buttonSend.setOnClickListener{
+        buttonSend.setOnClickListener {
             if (!validate()) {
                 Toast.makeText(this, R.string.field_messages, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -39,14 +39,14 @@ class tmbActivity : AppCompatActivity() {
             val height = editHeight.text.toString().toInt()
             val age = editAge.text.toString().toInt()
 
-            val result = calculateTmb(weight, height,age)
+            val result = calculateTmb(weight, height, age)
             val response = tmbRequest(result)
 
             AlertDialog.Builder(this)
                 .setMessage(getString(R.string.tmb_response, response))
                 .setPositiveButton(
                     android.R.string.ok
-                ) { dialog, which ->  }
+                ) { dialog, which -> }
                 .setNegativeButton(
                     R.string.save
                 ) { dialog, which ->
@@ -72,7 +72,7 @@ class tmbActivity : AppCompatActivity() {
 
     private fun tmbRequest(tmb: Double): Double {
         val items = resources.getStringArray(R.array.tmb_lifestyle)
-        return when{
+        return when {
             lifestyleAuto.text.toString() == items[0] -> tmb * 1.2
             lifestyleAuto.text.toString() == items[1] -> tmb * 1.375
             lifestyleAuto.text.toString() == items[2] -> tmb * 1.55
@@ -87,12 +87,12 @@ class tmbActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main,menu)
+        menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_search){
+        if (item.itemId == R.id.menu_search) {
             finish()
             openListActivity()
         }
@@ -100,8 +100,8 @@ class tmbActivity : AppCompatActivity() {
     }
 
     private fun openListActivity() {
-        val intent = Intent(this,ListCalcActivity::class.java)
-        intent.putExtra("type","tmb")
+        val intent = Intent(this, ListCalcActivity::class.java)
+        intent.putExtra("type", "tmb")
         startActivity(intent)
     }
 
